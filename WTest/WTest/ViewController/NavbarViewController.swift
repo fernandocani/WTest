@@ -8,9 +8,5 @@
 import UIKit
 
 class NavbarViewController: UINavigationController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 
 }

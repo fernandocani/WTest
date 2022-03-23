@@ -10,10 +10,9 @@ import SwiftCSV
 
 class ListViewController: UIViewController {
 
-    @IBOutlet weak var btnRequestURL: UIButton!
-    @IBOutlet weak var btnRequestCD: UIButton!
-    @IBOutlet weak var btnDeleteAllCD: UIButton!
     @IBOutlet weak var progress: UIActivityIndicatorView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
     
     let viewModel: ListViewModel!
     
@@ -28,36 +27,74 @@ class ListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Zip Codes"
+        
+        let itemNewCode = UIBarButtonItem(barButtonSystemItem: .refresh,
+                                          target: self,
+                                          action: #selector(self.btnOptions))
+        self.navigationItem.rightBarButtonItem = itemNewCode
+        
+        self.tableView.register(UINib(nibName: LocationTableViewCell.identifier, bundle: nil),
+                                forCellReuseIdentifier: LocationTableViewCell.identifier)
         self.viewModel.onUpdate = { [weak self] in
-            let viewModel = self!.viewModel!
-            print("taaadaaaaa \(viewModel.locations?.count)")
-            let locations = viewModel.locations
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "\(locations?.count)",
-                                              message: "\(locations)",
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                self?.present(alert, animated: true, completion: nil)
                 self?.progress.stopAnimating()
+                self?.tableView.reloadData()
             }
         }
-    }
-    
-    @IBAction func loadRequestURL() {
-        self.progress.startAnimating()
-        self.viewModel.fetchLocations()
-        
-    }
-    
-    @IBAction func loadRequestCD() {
-        self.progress.startAnimating()
         self.viewModel.fetchLocations()
     }
     
-    @IBAction func deleteAllCD() {
-        print(self.viewModel.locations?.count)
-        self.viewModel.deleteAll()
-        print(self.viewModel.locations?.count)
+    @objc
+    func btnOptions() {
+        let alert = UIAlertController(title: "Options",
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        let actionRequest = UIAlertAction(title: "Request CD", style: .default) { _ in
+            self.progress.startAnimating()
+            self.viewModel.fetchLocations()
+        }
+        let actionDelete = UIAlertAction(title: "Delete All", style: .default) { _ in
+            self.viewModel.deleteAll()
+        }
+        alert.addAction(actionRequest)
+        alert.addAction(actionDelete)
+        self.present(alert, animated: true, completion: nil)
     }
+    
+}
 
+extension ListViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.locations.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationTableViewCell.identifier,
+                                                       for: indexPath) as? LocationTableViewCell else {
+            return UITableViewCell()
+        }
+        let location = self.viewModel.locations[indexPath.row]
+        cell.setup(location: location)
+        return cell
+    }
+    
+}
+
+extension ListViewController: UITableViewDelegate {
+    
+}
+
+extension ListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.viewModel.filterLocations(string: searchText)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        self.viewModel.fetchLocations()
+    }
+    
 }

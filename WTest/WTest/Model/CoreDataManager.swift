@@ -87,8 +87,45 @@ final class CoreDataManager {
     func readRecord(searchString: String) -> [Location] {
         do {
             let request = Location.fetchRequest()
-            let predicate = NSPredicate(format: "cod_arteria CONTAINS[cd] '%@'", searchString)
-            request.predicate = predicate
+//            SELECT
+//            ZDESIG_POSTAL,
+//            ZNUM_COD_POSTAL,
+//            ZEXT_COD_POSTAL
+//            FROM
+//            ZLOCATION
+//            WHERE
+//            ZDESIG_POSTAL like '%SÃO%'
+//            OR
+//            ZNUM_COD_POSTAL like '%SÃO%'
+//            OR
+//            ZEXT_COD_POSTAL like '%SÃO%'
+
+            let words = searchString.components(separatedBy: " ")
+            var predicates: [NSPredicate] = []
+            for word in words {
+                if !word.isEmpty {
+                    predicates.append(
+                        //NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word])
+                        NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word,
+                                                                                                                              #keyPath(Location.num_cod_postal), word,
+                                                                                                                              #keyPath(Location.ext_cod_postal), word])
+                    )
+                }
+            }
+            
+            //request.predicate = NSPredicate(format: "desig_postal =[c] '%@'", searchString)
+//            request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), searchString])
+            //request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.num_cod_postal), searchString])
+            //request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.ext_cod_postal), searchString])
+//            var predicates: [NSPredicate] = [
+//                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), searchString]),
+//                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.num_cod_postal), searchString]),
+//                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.ext_cod_postal), searchString]),
+//            ]
+            
+            let compund = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+            request.predicate = compund
+            
             let locations = try self.viewContext.fetch(request)
             print(locations.count)
             return locations

@@ -23,6 +23,8 @@
 		DF3F09E127EB152600751D1B /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = DF3F09E027EB152600751D1B /* SwiftCSV */; };
 		DF3F09E727EB288E00751D1B /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3F09E627EB288E00751D1B /* ListViewModel.swift */; };
 		DF3F09E927EB402800751D1B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3F09E827EB402800751D1B /* CoreDataManager.swift */; };
+		DF3F09EC27EB6B2A00751D1B /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3F09EA27EB6B2A00751D1B /* LocationTableViewCell.swift */; };
+		DF3F09ED27EB6B2A00751D1B /* LocationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF3F09EB27EB6B2A00751D1B /* LocationTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		DF3F09DD27EB0D0E00751D1B /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		DF3F09E627EB288E00751D1B /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		DF3F09E827EB402800751D1B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		DF3F09EA27EB6B2A00751D1B /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
+		DF3F09EB27EB6B2A00751D1B /* LocationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				DF3F09D827EB05CF00751D1B /* ListViewController.xib */,
+				DF3F09EB27EB6B2A00751D1B /* LocationTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 			children = (
 				DF3F09D527EB058B00751D1B /* NavbarViewController.swift */,
 				DF3F09D727EB05CE00751D1B /* ListViewController.swift */,
+				DF3F09EA27EB6B2A00751D1B /* LocationTableViewCell.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -307,6 +313,7 @@
 			files = (
 				DF3F09AA27EB03EF00751D1B /* LaunchScreen.storyboard in Resources */,
 				DF3F09A727EB03EF00751D1B /* Assets.xcassets in Resources */,
+				DF3F09ED27EB6B2A00751D1B /* LocationTableViewCell.xib in Resources */,
 				DF3F09DA27EB05CF00751D1B /* ListViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,6 +345,7 @@
 				DF3F09D927EB05CF00751D1B /* ListViewController.swift in Sources */,
 				DF3F099B27EB03ED00751D1B /* AppDelegate.swift in Sources */,
 				DF3F09D627EB058B00751D1B /* NavbarViewController.swift in Sources */,
+				DF3F09EC27EB6B2A00751D1B /* LocationTableViewCell.swift in Sources */,
 				DF3F09E927EB402800751D1B /* CoreDataManager.swift in Sources */,
 				DF3F09E727EB288E00751D1B /* ListViewModel.swift in Sources */,
 				DF3F099D27EB03ED00751D1B /* SceneDelegate.swift in Sources */,

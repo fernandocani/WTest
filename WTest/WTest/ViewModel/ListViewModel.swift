@@ -12,7 +12,7 @@ class ListViewModel: ObservableObject {
     
     var coreData = CoreDataManager.shared
     var onUpdate = {}
-    var locations: [Location]? {
+    var locations: [Location] = [] {
         didSet {
             self.onUpdate()
         }
@@ -31,14 +31,36 @@ class ListViewModel: ObservableObject {
         }
     }
     
-    private func fetchURLLocations() {
+    private func fetchURLLocations(limit: Bool = false) {
         Service.shared.getLocations { [weak self] result in
             guard let coreData = self?.coreData else { return }
             switch result {
             case .success(let csv):
                 var resultArray: [Location] = []
                 for (index, item) in csv.namedRows.enumerated() {
-                    if index < 10 {
+                    if limit {
+                        if index < 10 {
+                            let newValue = Location(context: coreData.viewContext)
+                            newValue.cod_distrito    = item["cod_distrito"]
+                            newValue.cod_concelho    = item["cod_concelho"]
+                            newValue.cod_localidade  = item["cod_localidade"]
+                            newValue.nome_localidade = item["nome_localidade"]
+                            newValue.cod_arteria     = item["cod_arteria"]
+                            newValue.tipo_arteria    = item["tipo_arteria"]
+                            newValue.prep1           = item["prep1"]
+                            newValue.titulo_arteria  = item["titulo_arteria"]
+                            newValue.prep2           = item["prep2"]
+                            newValue.nome_arteria    = item["nome_arteria"]
+                            newValue.local_arteria   = item["local_arteria"]
+                            newValue.troco           = item["troco"]
+                            newValue.porta           = item["porta"]
+                            newValue.cliente         = item["cliente"]
+                            newValue.num_cod_postal  = item["num_cod_postal"]
+                            newValue.ext_cod_postal  = item["ext_cod_postal"]
+                            newValue.desig_postal    = item["desig_postal"]
+                            resultArray.append(newValue)
+                        }
+                    } else {
                         let newValue = Location(context: coreData.viewContext)
                         newValue.cod_distrito    = item["cod_distrito"]
                         newValue.cod_concelho    = item["cod_concelho"]
@@ -72,7 +94,13 @@ class ListViewModel: ObservableObject {
     
     func deleteAll() {
         self.coreData.deleteAllRecords()
-        self.locations = nil
+        self.locations.removeAll()
+    }
+    
+    func filterLocations(string: String) {
+        let filtered = self.coreData.readRecord(searchString: string)
+        //print(filtered.count)
+        self.locations = filtered
     }
     
 }
