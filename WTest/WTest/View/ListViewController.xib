@@ -10,7 +10,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListViewController" customModule="WTest" customModuleProvider="target">
             <connections>
-                <outlet property="btnRequest" destination="1tQ-MO-jQ3" id="wKH-Dw-cyX"/>
+                <outlet property="btnDeleteAllCD" destination="4wo-N0-qJL" id="Csl-IM-tB8"/>
+                <outlet property="btnRequestCD" destination="cPa-o6-Z9h" id="ctz-LB-Xhe"/>
+                <outlet property="btnRequestURL" destination="1tQ-MO-jQ3" id="BBC-0Q-9r5"/>
                 <outlet property="progress" destination="Gje-04-tY1" id="7yy-MO-rCW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -21,21 +23,49 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1tQ-MO-jQ3">
-                    <rect key="frame" x="168.5" y="432.5" width="77" height="31"/>
-                    <buttonConfiguration key="configuration" style="filled" title="Request"/>
+                    <rect key="frame" x="132" y="432.5" width="150" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="2NN-bw-DKg"/>
+                    </constraints>
+                    <buttonConfiguration key="configuration" style="filled" title="Request URL"/>
                     <connections>
-                        <action selector="loadRequest" destination="-1" eventType="touchUpInside" id="UJb-a7-7iC"/>
+                        <action selector="loadRequestURL" destination="-1" eventType="touchUpInside" id="kXK-OB-bnJ"/>
                     </connections>
                 </button>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Gje-04-tY1">
                     <rect key="frame" x="188.5" y="479.5" width="37" height="37"/>
                 </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cPa-o6-Z9h">
+                    <rect key="frame" x="132" y="393.5" width="150" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="ihT-HB-lbT"/>
+                    </constraints>
+                    <buttonConfiguration key="configuration" style="filled" title="Request CD"/>
+                    <connections>
+                        <action selector="loadRequestCD" destination="-1" eventType="touchUpInside" id="5Mq-Jn-e0X"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4wo-N0-qJL">
+                    <rect key="frame" x="132" y="354.5" width="150" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="hEw-ci-cxG"/>
+                    </constraints>
+                    <color key="tintColor" systemColor="systemRedColor"/>
+                    <buttonConfiguration key="configuration" style="tinted" title="Delete ALL CD"/>
+                    <connections>
+                        <action selector="deleteAllCD" destination="-1" eventType="touchUpInside" id="gAn-Qn-Lyi"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="cPa-o6-Z9h" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="5WC-6o-czr"/>
+                <constraint firstItem="cPa-o6-Z9h" firstAttribute="top" secondItem="4wo-N0-qJL" secondAttribute="bottom" constant="8" id="6ce-cC-zxG"/>
                 <constraint firstItem="Gje-04-tY1" firstAttribute="top" secondItem="1tQ-MO-jQ3" secondAttribute="bottom" constant="16" id="Opn-4e-No0"/>
                 <constraint firstItem="Gje-04-tY1" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="SaE-3z-HyU"/>
+                <constraint firstItem="1tQ-MO-jQ3" firstAttribute="top" secondItem="cPa-o6-Z9h" secondAttribute="bottom" constant="8" id="Tvo-EH-JV5"/>
+                <constraint firstItem="4wo-N0-qJL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="b6J-kv-TfK"/>
                 <constraint firstItem="1tQ-MO-jQ3" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="g7g-Lt-ifj"/>
                 <constraint firstItem="1tQ-MO-jQ3" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="uTg-0r-FyJ"/>
             </constraints>
@@ -45,6 +75,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

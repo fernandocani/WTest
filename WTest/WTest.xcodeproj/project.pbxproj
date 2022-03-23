@@ -21,6 +21,8 @@
 		DF3F09DA27EB05CF00751D1B /* ListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DF3F09D827EB05CF00751D1B /* ListViewController.xib */; };
 		DF3F09DE27EB0D0E00751D1B /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3F09DD27EB0D0E00751D1B /* Response.swift */; };
 		DF3F09E127EB152600751D1B /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = DF3F09E027EB152600751D1B /* SwiftCSV */; };
+		DF3F09E727EB288E00751D1B /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3F09E627EB288E00751D1B /* ListViewModel.swift */; };
+		DF3F09E927EB402800751D1B /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3F09E827EB402800751D1B /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 		DF3F09D727EB05CE00751D1B /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		DF3F09D827EB05CF00751D1B /* ListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListViewController.xib; sourceTree = "<group>"; };
 		DF3F09DD27EB0D0E00751D1B /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		DF3F09E627EB288E00751D1B /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		DF3F09E827EB402800751D1B /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +160,7 @@
 		DF3F09CF27EB045300751D1B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DF3F09E627EB288E00751D1B /* ListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -183,8 +188,9 @@
 		DF3F09D427EB049900751D1B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				DF3F09A327EB03ED00751D1B /* WTest.xcdatamodeld */,
 				DF3F09DD27EB0D0E00751D1B /* Response.swift */,
+				DF3F09A327EB03ED00751D1B /* WTest.xcdatamodeld */,
+				DF3F09E827EB402800751D1B /* CoreDataManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -332,6 +338,8 @@
 				DF3F09D927EB05CF00751D1B /* ListViewController.swift in Sources */,
 				DF3F099B27EB03ED00751D1B /* AppDelegate.swift in Sources */,
 				DF3F09D627EB058B00751D1B /* NavbarViewController.swift in Sources */,
+				DF3F09E927EB402800751D1B /* CoreDataManager.swift in Sources */,
+				DF3F09E727EB288E00751D1B /* ListViewModel.swift in Sources */,
 				DF3F099D27EB03ED00751D1B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

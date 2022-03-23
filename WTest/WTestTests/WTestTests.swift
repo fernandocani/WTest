@@ -32,5 +32,13 @@ class WTestTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+    //"2695"
+    //"2695-650"
+    //"2695 650"
+    //"São João"
+    //"sAo joA da TaLH" "sao talha"
+    //"talh joa"
+    //"joao talha" "talha 650 joao"
 
 }
