@@ -46,8 +46,8 @@ final class CoreDataManager {
     func readAllRecord() -> [Location] {
         do {
             let request = NSFetchRequest<Location>(entityName: "Location")
-            //let sort = NSSortDescriptor(key: #keyPath(Location.desig_postal), ascending: true)
-            //request.sortDescriptors = [sort]
+            let sort = NSSortDescriptor(key: #keyPath(Location.fullZipCode), ascending: true)
+            request.sortDescriptors = [sort]
             request.fetchBatchSize = 20
             let locations = try self.viewContext.fetch(request)
             return locations
