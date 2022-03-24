@@ -58,6 +58,7 @@ class ListViewModel: ObservableObject {
                             newValue.num_cod_postal  = item["num_cod_postal"]
                             newValue.ext_cod_postal  = item["ext_cod_postal"]
                             newValue.desig_postal    = item["desig_postal"]
+                            newValue.fullZipCode     = (item["num_cod_postal"] ?? "") + "-" + (item["ext_cod_postal"] ?? "")
                             resultArray.append(newValue)
                         }
                     } else {
@@ -79,6 +80,7 @@ class ListViewModel: ObservableObject {
                         newValue.num_cod_postal  = item["num_cod_postal"]
                         newValue.ext_cod_postal  = item["ext_cod_postal"]
                         newValue.desig_postal    = item["desig_postal"]
+                        newValue.fullZipCode     = (item["num_cod_postal"] ?? "") + "-" + (item["ext_cod_postal"] ?? "")
                         resultArray.append(newValue)
                     }
                 }

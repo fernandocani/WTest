@@ -19,14 +19,15 @@ class LocationTableViewCell: UITableViewCell {
     }
 
     func setup(location: Location) {
-        guard let num_cod_postal = location.num_cod_postal,
-              let ext_cod_postal = location.ext_cod_postal,
+        guard let _ = location.num_cod_postal,
+              let _ = location.ext_cod_postal,
+              let fullZipCode = location.fullZipCode,
               let desig_postal = location.desig_postal else {
                   self.lblZipCode.text = nil
                   self.lblDesigPostal.text = nil
                   return
               }
-        self.lblZipCode.text = num_cod_postal + "-" + ext_cod_postal
+        self.lblZipCode.text = fullZipCode
         self.lblDesigPostal.text = desig_postal
     }
     

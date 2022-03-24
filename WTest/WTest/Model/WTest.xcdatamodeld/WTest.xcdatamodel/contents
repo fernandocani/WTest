@@ -8,6 +8,7 @@
         <attribute name="cod_localidade" optional="YES" attributeType="String"/>
         <attribute name="desig_postal" optional="YES" attributeType="String"/>
         <attribute name="ext_cod_postal" optional="YES" attributeType="String"/>
+        <attribute name="fullZipCode" optional="YES" attributeType="String"/>
         <attribute name="local_arteria" optional="YES" attributeType="String"/>
         <attribute name="nome_arteria" optional="YES" attributeType="String"/>
         <attribute name="nome_localidade" optional="YES" attributeType="String"/>
@@ -20,6 +21,6 @@
         <attribute name="troco" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Location" positionX="-63" positionY="-18" width="128" height="14"/>
+        <element name="Location" positionX="-63" positionY="-18" width="128" height="299"/>
     </elements>
 </model>

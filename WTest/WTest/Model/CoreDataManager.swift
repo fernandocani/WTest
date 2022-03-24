@@ -43,32 +43,6 @@ final class CoreDataManager {
         completion()
     }
     
-    func createRecord(value: LocationResponse) {
-        let newValue = Location(context: self.viewContext)
-        newValue.cod_distrito    = value.cod_distrito
-        newValue.cod_concelho    = value.cod_concelho
-        newValue.cod_localidade  = value.cod_localidade
-        newValue.nome_localidade = value.nome_localidade
-        newValue.cod_arteria     = value.cod_arteria
-        newValue.tipo_arteria    = value.tipo_arteria
-        newValue.prep1           = value.prep1
-        newValue.titulo_arteria  = value.titulo_arteria
-        newValue.prep2           = value.prep2
-        newValue.nome_arteria    = value.nome_arteria
-        newValue.local_arteria   = value.local_arteria
-        newValue.troco           = value.troco
-        newValue.porta           = value.porta
-        newValue.cliente         = value.cliente
-        newValue.num_cod_postal  = value.num_cod_postal
-        newValue.ext_cod_postal  = value.ext_cod_postal
-        newValue.desig_postal    = value.desig_postal
-        do {
-            try self.viewContext.save()
-        } catch {
-            print(error)
-        }
-    }
-    
     func readAllRecord() -> [Location] {
         do {
             let request = NSFetchRequest<Location>(entityName: "Location")
@@ -90,9 +64,10 @@ final class CoreDataManager {
         for word in words {
             if !word.isEmpty {
                 predicates.append(
-                    NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word,
-                                                                                                                          #keyPath(Location.num_cod_postal), word,
-                                                                                                                          #keyPath(Location.ext_cod_postal), word])
+                    NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word,
+                                                                                                                                                #keyPath(Location.num_cod_postal), word,
+                                                                                                                                                #keyPath(Location.ext_cod_postal), word,
+                                                                                                                                                #keyPath(Location.fullZipCode), word])
                 )
             }
         }
