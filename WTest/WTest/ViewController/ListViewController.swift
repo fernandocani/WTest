@@ -37,7 +37,7 @@ class ListViewController: UIViewController {
         self.tableView.register(UINib(nibName: LocationTableViewCell.identifier, bundle: nil),
                                 forCellReuseIdentifier: LocationTableViewCell.identifier)
         self.viewModel.onUpdate = { [weak self] in
-            print("######### RELOAD DATA #########")
+            //print("######### RELOAD DATA #########")
             DispatchQueue.main.async {
                 self?.progress.stopAnimating()
                 self?.tableView.reloadData()
@@ -55,11 +55,13 @@ class ListViewController: UIViewController {
             self.progress.startAnimating()
             self.viewModel.fetchLocations()
         }
-        let actionDelete = UIAlertAction(title: "Delete All", style: .default) { _ in
+        let actionDelete = UIAlertAction(title: "Delete All", style: .destructive) { _ in
             self.viewModel.deleteAll()
         }
+        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(actionRequest)
         alert.addAction(actionDelete)
+        alert.addAction(actionCancel)
         self.present(alert, animated: true, completion: nil)
     }
     

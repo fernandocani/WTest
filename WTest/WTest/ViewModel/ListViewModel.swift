@@ -14,6 +14,7 @@ class ListViewModel: ObservableObject {
     var onUpdate = {}
     var locations: [Location] = [] {
         didSet {
+            //print("didSet locations in ListViewModel")
             self.onUpdate()
         }
     }
@@ -97,16 +98,12 @@ class ListViewModel: ObservableObject {
         self.locations.removeAll()
     }
     
-    //func filterLocations(string: String) {
-    //    let filtered = self.coreData.readRecord(searchString: string)
-    //    //print(filtered.count)
-    //    self.locations = filtered
-    //}
-    
     func filterLocations(string: String) {
-        self.coreData.readRecord(searchString: string) { [weak self] filterlocations in
+        self.coreData.readRecord(searchString: string) { filtered in
             //print(filtered.count)
-            self?.locations = filterlocations
+            DispatchQueue.main.async {
+                self.locations = filtered
+            }
         }
     }
     
