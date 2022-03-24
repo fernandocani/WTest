@@ -11,23 +11,27 @@ import CoreData
 
 final class CoreDataManager {
 
+    
     static let shared = CoreDataManager()
     
     lazy var persistentContainer: NSPersistentContainer = {
         let persistentContainer = NSPersistentContainer(name: "WTest")
         persistentContainer.loadPersistentStores { _, error in
-            if let error = error {
-                fatalError("Unable to initialize Core Data Stack: \(error)")
-            }
+            guard let error = error as NSError? else { return }
+            fatalError("Unresolved error: \(error), \(error.userInfo)")
         }
+        persistentContainer.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        persistentContainer.viewContext.undoManager = nil
+        persistentContainer.viewContext.shouldDeleteInaccessibleFaults = true
+        
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         return persistentContainer
     }()
     var viewContext: NSManagedObjectContext {
         self.persistentContainer.viewContext
     }
     
-    var locations: [Location]?
-    
+    private init() { }
     
     // MARK: - CRUD
     
@@ -76,6 +80,7 @@ final class CoreDataManager {
             let request = NSFetchRequest<Location>(entityName: "Location")
             //let sort = NSSortDescriptor(key: "", ascending: true)
             //request.sortDescriptors = [sort]
+            request.fetchBatchSize = 20
             let locations = try self.viewContext.fetch(request)
             print(locations.count)
             return locations
@@ -84,55 +89,91 @@ final class CoreDataManager {
         }
     }
     
-    func readRecord(searchString: String) -> [Location] {
-        do {
-            let request = Location.fetchRequest()
-//            SELECT
-//            ZDESIG_POSTAL,
-//            ZNUM_COD_POSTAL,
-//            ZEXT_COD_POSTAL
-//            FROM
-//            ZLOCATION
-//            WHERE
-//            ZDESIG_POSTAL like '%SÃO%'
-//            OR
-//            ZNUM_COD_POSTAL like '%SÃO%'
-//            OR
-//            ZEXT_COD_POSTAL like '%SÃO%'
-
-            let words = searchString.components(separatedBy: " ")
-            var predicates: [NSPredicate] = []
-            for word in words {
-                if !word.isEmpty {
-                    predicates.append(
-                        //NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word])
-                        NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word,
-                                                                                                                              #keyPath(Location.num_cod_postal), word,
-                                                                                                                              #keyPath(Location.ext_cod_postal), word])
-                    )
-                }
+//    func readRecord(searchString: String) -> [Location] {
+//        do {
+//            let request = Location.fetchRequest()
+////            SELECT
+////            ZDESIG_POSTAL,
+////            ZNUM_COD_POSTAL,
+////            ZEXT_COD_POSTAL
+////            FROM
+////            ZLOCATION
+////            WHERE
+////            ZDESIG_POSTAL like '%SÃO%'
+////            OR
+////            ZNUM_COD_POSTAL like '%SÃO%'
+////            OR
+////            ZEXT_COD_POSTAL like '%SÃO%'
+//
+//            let words = searchString.components(separatedBy: " ")
+//            var predicates: [NSPredicate] = []
+//            for word in words {
+//                if !word.isEmpty {
+//                    predicates.append(
+//                        //NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word])
+//                        NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word,
+//                                                                                                                              #keyPath(Location.num_cod_postal), word,
+//                                                                                                                              #keyPath(Location.ext_cod_postal), word])
+//                    )
+//                }
+//            }
+//
+//            //request.predicate = NSPredicate(format: "desig_postal =[c] '%@'", searchString)
+////            request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), searchString])
+//            //request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.num_cod_postal), searchString])
+//            //request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.ext_cod_postal), searchString])
+////            var predicates: [NSPredicate] = [
+////                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), searchString]),
+////                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.num_cod_postal), searchString]),
+////                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.ext_cod_postal), searchString]),
+////            ]
+//
+//            let compund = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+//            request.predicate = compund
+//
+//            let locations = try self.viewContext.fetch(request)
+//            print(locations.count)
+//            return locations
+//        } catch {
+//            fatalError()
+//        }
+//    }
+    
+    // MARK: - readRecord searchString
+    func readRecord(searchString: String, completion: @escaping ([Location]) -> Void) {
+        let words = searchString.components(separatedBy: " ")
+        var predicates: [NSPredicate] = []
+        for word in words {
+            if !word.isEmpty {
+                predicates.append(
+                    NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), word,
+                                                                                                                          #keyPath(Location.num_cod_postal), word,
+                                                                                                                          #keyPath(Location.ext_cod_postal), word])
+                )
             }
-            
-            //request.predicate = NSPredicate(format: "desig_postal =[c] '%@'", searchString)
-//            request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), searchString])
-            //request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.num_cod_postal), searchString])
-            //request.predicate = NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.ext_cod_postal), searchString])
-//            var predicates: [NSPredicate] = [
-//                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.desig_postal), searchString]),
-//                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.num_cod_postal), searchString]),
-//                NSPredicate(format: "%K CONTAINS[cd] %@", argumentArray: [#keyPath(Location.ext_cod_postal), searchString]),
-//            ]
-            
-            let compund = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-            request.predicate = compund
-            
+        }
+        let compound = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        let request = NSFetchRequest<Location>(entityName: "Location")
+        request.fetchBatchSize = 20
+        request.predicate = compound
+        do {
             let locations = try self.viewContext.fetch(request)
+            print("######### DONE FILTER #########")
             print(locations.count)
-            return locations
+            completion(locations)
         } catch {
             fatalError()
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func updateRecord(value: Location, newValue: LocationResponse) {
         value.cod_arteria = newValue.cod_arteria

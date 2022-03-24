@@ -37,6 +37,7 @@ class ListViewController: UIViewController {
         self.tableView.register(UINib(nibName: LocationTableViewCell.identifier, bundle: nil),
                                 forCellReuseIdentifier: LocationTableViewCell.identifier)
         self.viewModel.onUpdate = { [weak self] in
+            print("######### RELOAD DATA #########")
             DispatchQueue.main.async {
                 self?.progress.stopAnimating()
                 self?.tableView.reloadData()

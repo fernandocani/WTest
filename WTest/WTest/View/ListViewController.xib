@@ -24,9 +24,9 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vsc-ZU-hc9">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
-                        <searchBar contentMode="redraw" placeholder="ex.: Agadão" translatesAutoresizingMaskIntoConstraints="NO" id="vgM-1A-74B">
+                        <searchBar contentMode="redraw" placeholder="ex.: Agadão" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vgM-1A-74B">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="51"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="xx1-7z-bA2"/>
                             </connections>
@@ -55,7 +55,7 @@
                 <constraint firstItem="vsc-ZU-hc9" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="f7i-nF-WY5"/>
                 <constraint firstItem="Gje-04-tY1" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="gs9-EX-dzF"/>
             </constraints>
-            <point key="canvasLocation" x="137.68115942028987" y="153.34821428571428"/>
+            <point key="canvasLocation" x="136.80000000000001" y="152.47376311844079"/>
         </view>
     </objects>
     <resources>
