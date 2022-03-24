@@ -14,6 +14,8 @@ class ListViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet var cstBottom: NSLayoutConstraint!
+    
     let viewModel: ListViewModel!
     
     required init() {
@@ -34,6 +36,9 @@ class ListViewController: UIViewController {
                                           action: #selector(self.btnOptions))
         self.navigationItem.rightBarButtonItem = itemNewCode
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         self.tableView.register(UINib(nibName: LocationTableViewCell.identifier, bundle: nil),
                                 forCellReuseIdentifier: LocationTableViewCell.identifier)
         self.viewModel.onUpdate = { [weak self] in
@@ -43,6 +48,11 @@ class ListViewController: UIViewController {
             }
         }
         self.viewModel.fetchLocations()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc
@@ -95,6 +105,22 @@ extension ListViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         self.viewModel.fetchLocations()
+    }
+    
+}
+
+extension ListViewController {
+    
+    @objc
+    func keyboardWillShow(_ notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            self.cstBottom.constant = keyboardSize.height
+        }
+    }
+    
+    @objc
+    func keyboardWillHide(_ notification: Notification) {
+        self.cstBottom.constant = 0
     }
     
 }

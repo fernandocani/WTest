@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListViewController" customModule="WTest" customModuleProvider="target">
             <connections>
+                <outlet property="cstBottom" destination="dfr-H6-gvP" id="yRK-NO-asw"/>
                 <outlet property="progress" destination="Gje-04-tY1" id="7yy-MO-rCW"/>
                 <outlet property="searchBar" destination="vgM-1A-74B" id="ziu-0V-5Ox"/>
                 <outlet property="tableView" destination="6YD-RP-xCq" id="DZT-ZK-MBa"/>
