@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 final class CoreDataManager {
-
     
     static let shared = CoreDataManager()
     
@@ -77,7 +76,6 @@ final class CoreDataManager {
             //request.sortDescriptors = [sort]
             request.fetchBatchSize = 20
             let locations = try self.viewContext.fetch(request)
-            //print(locations.count)
             return locations
         } catch {
             fatalError()
@@ -106,7 +104,6 @@ final class CoreDataManager {
         self.enqueue { context in
             do {
                 let locations = try context.fetch(request)
-                //print("depois do try, dentro do perform")
                 completion(locations)
             } catch {
                 fatalError()

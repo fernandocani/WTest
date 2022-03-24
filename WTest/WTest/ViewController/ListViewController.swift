@@ -42,13 +42,12 @@ class ListViewController: UIViewController {
         self.tableView.register(UINib(nibName: LocationTableViewCell.identifier, bundle: nil),
                                 forCellReuseIdentifier: LocationTableViewCell.identifier)
         self.viewModel.onUpdate = { [weak self] in
-            //print("######### RELOAD DATA #########")
             DispatchQueue.main.async {
                 self?.progress.stopAnimating()
                 self?.tableView.reloadData()
             }
         }
-        self.viewModel.fetchLocations()
+        self.fetchLocations()
     }
     
     deinit {
@@ -56,17 +55,21 @@ class ListViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    func fetchLocations() {
+        self.progress.startAnimating()
+        self.viewModel.fetchLocations()
+    }
+    
     @objc
     func btnOptions() {
         let alert = UIAlertController(title: "Options",
                                       message: nil,
                                       preferredStyle: .actionSheet)
-        let actionRequest = UIAlertAction(title: "Request CD", style: .default) { _ in
-            self.progress.startAnimating()
-            self.viewModel.fetchLocations()
+        let actionRequest = UIAlertAction(title: "Request CD", style: .default) { [weak self] _ in
+            self?.fetchLocations()
         }
-        let actionDelete = UIAlertAction(title: "Delete All", style: .destructive) { _ in
-            self.viewModel.deleteAll()
+        let actionDelete = UIAlertAction(title: "Delete All", style: .destructive) { [weak self] _ in
+            self?.viewModel.deleteAll()
         }
         let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(actionRequest)
