@@ -7,11 +7,15 @@
 
 import Foundation
 import CoreData
+import SwiftCSV
 
-class ListViewModel: ObservableObject {
+final class ListViewModel {
     
-    var coreData = CoreDataManager.shared
+    private var coreData = CoreDataManager.shared
+    
     var onUpdate = {}
+    var onErrorHandling: ((WTestError) -> Void) = { _ in }
+
     var locations: [Location] = [] {
         didSet {
             self.onUpdate()
@@ -37,65 +41,46 @@ class ListViewModel: ObservableObject {
             switch result {
             case .success(let csv):
                 var resultArray: [Location] = []
-                for (index, item) in csv.namedRows.enumerated() {
-                    if limit {
-                        if index < 10 {
-                            let newValue = Location(context: coreData.viewContext)
-                            newValue.cod_distrito    = item["cod_distrito"]
-                            newValue.cod_concelho    = item["cod_concelho"]
-                            newValue.cod_localidade  = item["cod_localidade"]
-                            newValue.nome_localidade = item["nome_localidade"]
-                            newValue.cod_arteria     = item["cod_arteria"]
-                            newValue.tipo_arteria    = item["tipo_arteria"]
-                            newValue.prep1           = item["prep1"]
-                            newValue.titulo_arteria  = item["titulo_arteria"]
-                            newValue.prep2           = item["prep2"]
-                            newValue.nome_arteria    = item["nome_arteria"]
-                            newValue.local_arteria   = item["local_arteria"]
-                            newValue.troco           = item["troco"]
-                            newValue.porta           = item["porta"]
-                            newValue.cliente         = item["cliente"]
-                            newValue.num_cod_postal  = item["num_cod_postal"]
-                            newValue.ext_cod_postal  = item["ext_cod_postal"]
-                            newValue.desig_postal    = item["desig_postal"]
-                            newValue.fullZipCode     = (item["num_cod_postal"] ?? "") + "-" + (item["ext_cod_postal"] ?? "")
-                            resultArray.append(newValue)
-                        }
-                    } else {
-                        let newValue = Location(context: coreData.viewContext)
-                        newValue.cod_distrito    = item["cod_distrito"]
-                        newValue.cod_concelho    = item["cod_concelho"]
-                        newValue.cod_localidade  = item["cod_localidade"]
-                        newValue.nome_localidade = item["nome_localidade"]
-                        newValue.cod_arteria     = item["cod_arteria"]
-                        newValue.tipo_arteria    = item["tipo_arteria"]
-                        newValue.prep1           = item["prep1"]
-                        newValue.titulo_arteria  = item["titulo_arteria"]
-                        newValue.prep2           = item["prep2"]
-                        newValue.nome_arteria    = item["nome_arteria"]
-                        newValue.local_arteria   = item["local_arteria"]
-                        newValue.troco           = item["troco"]
-                        newValue.porta           = item["porta"]
-                        newValue.cliente         = item["cliente"]
-                        newValue.num_cod_postal  = item["num_cod_postal"]
-                        newValue.ext_cod_postal  = item["ext_cod_postal"]
-                        newValue.desig_postal    = item["desig_postal"]
-                        newValue.fullZipCode     = (item["num_cod_postal"] ?? "") + "-" + (item["ext_cod_postal"] ?? "")
-                        resultArray.append(newValue)
+                for item in csv.namedRows {
+                    if let location = self?.createLocationModel(item: item) {
+                        resultArray.append(location)
                     }
                 }
                 coreData.createFullDB(locations: resultArray) {
                     self?.fetchCDLocations()
                 }
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self?.onErrorHandling(error)
+                }
             }
         }
     }
     
-    func deleteAll() {
-        self.coreData.deleteAllRecords()
-        self.locations.removeAll()
+    private func createLocationModel(item: [String : String]) -> Location {
+        let newValue = Location(context: coreData.viewContext)
+        newValue.cod_distrito    = item["cod_distrito"]
+        newValue.cod_concelho    = item["cod_concelho"]
+        newValue.cod_localidade  = item["cod_localidade"]
+        newValue.nome_localidade = item["nome_localidade"]
+        newValue.cod_arteria     = item["cod_arteria"]
+        newValue.tipo_arteria    = item["tipo_arteria"]
+        newValue.prep1           = item["prep1"]
+        newValue.titulo_arteria  = item["titulo_arteria"]
+        newValue.prep2           = item["prep2"]
+        newValue.nome_arteria    = item["nome_arteria"]
+        newValue.local_arteria   = item["local_arteria"]
+        newValue.troco           = item["troco"]
+        newValue.porta           = item["porta"]
+        newValue.cliente         = item["cliente"]
+        newValue.num_cod_postal  = item["num_cod_postal"]
+        newValue.ext_cod_postal  = item["ext_cod_postal"]
+        newValue.desig_postal    = item["desig_postal"]
+        if let num_cod_postal = item["num_cod_postal"],
+           let ext_cod_postal = item["ext_cod_postal"] {
+            newValue.fullZipCode = num_cod_postal + "-" + ext_cod_postal
+        }
+        return newValue
     }
     
     func filterLocations(string: String) {
@@ -104,6 +89,11 @@ class ListViewModel: ObservableObject {
                 self.locations = filtered
             }
         }
+    }
+    
+    func deleteAll() {
+        self.coreData.deleteAllRecords()
+        self.locations.removeAll()
     }
     
 }

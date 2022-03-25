@@ -13,21 +13,21 @@ final class CoreDataManager {
     
     static let shared = CoreDataManager()
     
-    lazy var persistentContainer: NSPersistentContainer = {
+    private lazy var persistentContainer: NSPersistentContainer = {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
     }()
     var viewContext: NSManagedObjectContext {
         self.persistentContainer.viewContext
     }
-    var persistentContainerQueue: OperationQueue = {
+    private var persistentContainerQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
     
     private init() { }
-    
-    // MARK: - CRUD
+
+    // MARK: - Create
     
     func createFullDB(locations: [Location], completion: @escaping () -> Void) {
         self.viewContext.performAndWait {
@@ -43,6 +43,8 @@ final class CoreDataManager {
         completion()
     }
     
+    // MARK: - Read
+    
     func readAllRecord() -> [Location] {
         do {
             let request = NSFetchRequest<Location>(entityName: "Location")
@@ -55,8 +57,6 @@ final class CoreDataManager {
             fatalError()
         }
     }
-    
-    // MARK: - readRecord searchString
     
     func readRecord(searchString: String, completion: @escaping ([Location]) -> Void) {
         let words = searchString.components(separatedBy: " ")
@@ -86,23 +86,7 @@ final class CoreDataManager {
         }
     }
     
-    func updateRecord(value: Location, newValue: LocationResponse) {
-        value.cod_arteria = newValue.cod_arteria
-        do {
-            try self.viewContext.save()
-        } catch {
-            fatalError()
-        }
-    }
-    
-    func deleteRecord(value: Location) {
-        self.viewContext.delete(value)
-        do {
-            try self.viewContext.save()
-        } catch {
-            fatalError()
-        }
-    }
+    // MARK: - Delete
     
     func deleteAllRecords() {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Location")
@@ -113,6 +97,13 @@ final class CoreDataManager {
             fatalError()
         }
     }
+    
+}
+
+// MARK: - Extension
+
+extension CoreDataManager {
+    
     
     private func enqueue(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
         self.persistentContainerQueue.addOperation() {

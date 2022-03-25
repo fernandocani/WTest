@@ -31,20 +31,40 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         self.title = "Zip Codes"
         
-        let itemNewCode = UIBarButtonItem(barButtonSystemItem: .refresh,
-                                          target: self,
-                                          action: #selector(self.btnOptions))
-        self.navigationItem.rightBarButtonItem = itemNewCode
+        self.setupBarButtonItem()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.tableView.register(UINib(nibName: LocationTableViewCell.identifier, bundle: nil),
                                 forCellReuseIdentifier: LocationTableViewCell.identifier)
+        
         self.viewModel.onUpdate = { [weak self] in
             DispatchQueue.main.async {
                 self?.progress.stopAnimating()
                 self?.tableView.reloadData()
+            }
+        }
+        self.viewModel.onErrorHandling = { [weak self] error in
+            var message = String()
+            switch error {
+            case WTestError.ApiError(let string):
+                message = string
+            default:
+                message = error.localizedDescription
+            }
+            let alert = UIAlertController(title: "Error",
+                                          message: message,
+                                          preferredStyle: .alert)
+            let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
+            let actionTryAgain = UIAlertAction(title: "Try Again", style: .default) { [weak self] _ in
+                self?.fetchLocations()
+            }
+            alert.addAction(actionTryAgain)
+            alert.addAction(actionCancel)
+            DispatchQueue.main.async {
+                self?.progress.stopAnimating()
+                self?.present(alert, animated: true, completion: nil)
             }
         }
         self.fetchLocations()
@@ -53,6 +73,13 @@ class ListViewController: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func setupBarButtonItem() {
+        let itemNewCode = UIBarButtonItem(barButtonSystemItem: .refresh,
+                                          target: self,
+                                          action: #selector(self.btnOptions))
+        self.navigationItem.rightBarButtonItem = itemNewCode
     }
     
     func fetchLocations() {
