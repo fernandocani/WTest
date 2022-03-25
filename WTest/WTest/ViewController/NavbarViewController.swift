@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Class to be moddified if some change to NavigationBar exists.
 class NavbarViewController: UINavigationController {
 
 }

@@ -31,6 +31,8 @@ struct Service {
     static var shared = Service()
     private let url = "https://raw.githubusercontent.com/centraldedados/codigos_postais/master/data/codigos_postais.csv"
     
+    /// Calls WS to fetch CSV for locations
+    /// - Parameter completion: Return the CSV if success, or and WTestError if fails.
     func getLocations(completion: @escaping (Result<CSV, WTestError>) -> Void) {
         guard let api = URL(string: self.url) else {
             completion(.failure(.ConvertURL))

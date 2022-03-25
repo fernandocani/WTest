@@ -22,10 +22,14 @@ final class ListViewModel {
         }
     }
     
+    /// Public function to fetch the Locations.
     func fetchLocations() {
         self.fetchCDLocations()
     }
     
+    /// Look at DB if has any entries.
+    /// If YES, update the locations var with the results
+    /// If NO, calls fetchURLLocations
     private func fetchCDLocations() {
         let locations = self.coreData.readAllRecord()
         if locations.isEmpty {
@@ -35,7 +39,10 @@ final class ListViewModel {
         }
     }
     
-    private func fetchURLLocations(limit: Bool = false) {
+    /// Get Locations from WS.
+    /// If success, recals fetchCDLocations.
+    /// if fails, throw WTestError
+    private func fetchURLLocations() {
         Service.shared.getLocations { [weak self] result in
             guard let coreData = self?.coreData else { return }
             switch result {
@@ -46,7 +53,7 @@ final class ListViewModel {
                         resultArray.append(location)
                     }
                 }
-                coreData.createFullDB(locations: resultArray) {
+                if coreData.createFullDB(locations: resultArray) {
                     self?.fetchCDLocations()
                 }
             case .failure(let error):
@@ -57,6 +64,9 @@ final class ListViewModel {
         }
     }
     
+    /// Auxliar function to create Location object from CSV row
+    /// - Parameter item: CSV row
+    /// - Returns: Location object
     private func createLocationModel(item: [String : String]) -> Location {
         let newValue = Location(context: coreData.viewContext)
         newValue.cod_distrito    = item["cod_distrito"]
@@ -83,6 +93,8 @@ final class ListViewModel {
         return newValue
     }
     
+    /// Filters DB based on query string
+    /// - Parameter string: string to search on DB
     func filterLocations(string: String) {
         self.coreData.readRecord(searchString: string) { filtered in
             DispatchQueue.main.async {
@@ -91,6 +103,7 @@ final class ListViewModel {
         }
     }
     
+    /// Clear DB to help debugging
     func deleteAll() {
         self.coreData.deleteAllRecords()
         self.locations.removeAll()

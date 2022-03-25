@@ -18,6 +18,7 @@ class ListViewController: UIViewController {
     
     let viewModel: ListViewModel!
     
+    /// Convenience instantiation of VC
     required init() {
         self.viewModel = ListViewModel()
         super.init(nibName: "ListViewController", bundle: nil)
@@ -70,11 +71,13 @@ class ListViewController: UIViewController {
         self.fetchLocations()
     }
     
+    /// Clear Notification Center to prevent memory leaks
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    /// Right bar button to show debuggin options
     private func setupBarButtonItem() {
         let itemNewCode = UIBarButtonItem(barButtonSystemItem: .refresh,
                                           target: self,

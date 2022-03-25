@@ -29,22 +29,31 @@ final class CoreDataManager {
 
     // MARK: - Create
     
-    func createFullDB(locations: [Location], completion: @escaping () -> Void) {
+    /// Saves the entire database
+    /// - Parameters:
+    ///   - locations: Array of Locations to save
+    /// - Returns: Returns if the save was successful
+    func createFullDB(locations: [Location]) -> Bool {
+        var success: Bool = false
         self.viewContext.performAndWait {
             for location in locations {
                 self.viewContext.insert(location)
             }
             do {
                 try self.viewContext.save()
+                success = true
             } catch {
-                fatalError()
+                success = false
             }
         }
-        completion()
+        return success
     }
     
     // MARK: - Read
     
+    
+    /// Get all Locations from DB
+    /// - Returns: Array of Locations
     func readAllRecord() -> [Location] {
         do {
             let request = NSFetchRequest<Location>(entityName: "Location")
@@ -58,6 +67,11 @@ final class CoreDataManager {
         }
     }
     
+    
+    /// Filter DB with some query
+    /// - Parameters:
+    ///   - searchString: Query string to filter
+    ///   - completion: Result of the search, if any
     func readRecord(searchString: String, completion: @escaping ([Location]) -> Void) {
         let words = searchString.components(separatedBy: " ")
         var predicates: [NSPredicate] = []
@@ -80,14 +94,15 @@ final class CoreDataManager {
             do {
                 let locations = try context.fetch(request)
                 completion(locations)
-            } catch {
-                fatalError()
+            } catch let error {
+                print(error)
             }
         }
     }
     
     // MARK: - Delete
     
+    /// Clear DB
     func deleteAllRecords() {
         let request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Location")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
@@ -105,12 +120,13 @@ final class CoreDataManager {
 extension CoreDataManager {
     
     
+    /// Function to search asynchronous
     private func enqueue(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
         self.persistentContainerQueue.addOperation() {
             let context: NSManagedObjectContext = self.persistentContainer.newBackgroundContext()
             context.performAndWait{
                 block(context)
-                try? context.save() //Don't just use '?' here look at the error and log it to your analytics service
+                try? context.save()
             }
         }
     }
