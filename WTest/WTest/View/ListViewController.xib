@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListViewController" customModule="WTest" customModuleProvider="target">
+            <connections>
+                <outlet property="cstBottom" destination="dfr-H6-gvP" id="yRK-NO-asw"/>
+                <outlet property="progress" destination="Gje-04-tY1" id="7yy-MO-rCW"/>
+                <outlet property="searchBar" destination="vgM-1A-74B" id="ziu-0V-5Ox"/>
+                <outlet property="tableView" destination="6YD-RP-xCq" id="DZT-ZK-MBa"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vsc-ZU-hc9">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <searchBar contentMode="redraw" placeholder="ex.: Agadão" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vgM-1A-74B">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="51"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="xx1-7z-bA2"/>
+                            </connections>
+                        </searchBar>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="6YD-RP-xCq">
+                            <rect key="frame" x="0.0" y="51" width="375" height="616"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="OD1-9g-yxg"/>
+                                <outlet property="delegate" destination="-1" id="uGa-jN-eup"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                </stackView>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Gje-04-tY1">
+                    <rect key="frame" x="169" y="315" width="37" height="37"/>
+                </activityIndicatorView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vsc-ZU-hc9" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="924-PR-Oet"/>
+                <constraint firstItem="Gje-04-tY1" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="KCK-Vq-Y0e"/>
+                <constraint firstItem="vsc-ZU-hc9" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="W25-f4-T34"/>
+                <constraint firstAttribute="bottom" secondItem="vsc-ZU-hc9" secondAttribute="bottom" id="dfr-H6-gvP"/>
+                <constraint firstItem="vsc-ZU-hc9" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="f7i-nF-WY5"/>
+                <constraint firstItem="Gje-04-tY1" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="gs9-EX-dzF"/>
+            </constraints>
+            <point key="canvasLocation" x="136.80000000000001" y="152.47376311844079"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
