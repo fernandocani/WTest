@@ -46,7 +46,7 @@ final class ListViewModel {
                         resultArray.append(location)
                     }
                 }
-                coreData.createFullDB(locations: resultArray) {
+                if coreData.createFullDB(locations: resultArray) {
                     self?.fetchCDLocations()
                 }
             case .failure(let error):
