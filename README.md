@@ -5,6 +5,7 @@
 
 ## Instructions:
 - Open `WTest.xcodeproj` on Xcode (was developed on version `13.2.1`);
+- Install/update Swift Package Manager: `File -> Packages -> Update to Latest Package Version`;
 - Build on simulator
 
 ## If want to buil on device (recomended):
@@ -24,8 +25,6 @@
 
 ## Parsing
 Used `Swift CSV 0.6.1` via **Swift Package Manager** to parse the downloaded file.
-
-To install/update: `File -> Packages -> Update to Latest Package Version`
 
 ## Decisions:
 - MVVM Architechture
